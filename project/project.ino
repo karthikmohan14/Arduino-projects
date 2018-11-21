@@ -7,8 +7,10 @@ Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified(12345);
 double roll = 0.00, pitch = 0.00, x = 0.00, y = 0.00, z = 0.00;
 double mini = 0.00, fmini = 0.10, maxi = 0.00, xf = 0.00, yf = 0.00, zf = 0.00, xd = 0.00, yd = 0.00, zd = 0.00;
 int timecounter = 0;
-
-void setup() {
+int buzzer = D3;
+void setup() 
+{  
+ pinMode(buzzer, HIGH);
  Serial.begin(115200);
  if (!accel.begin()) {
   Serial.println("Ooops, no ADXL345 detected ... Check your wiring!");
@@ -58,10 +60,23 @@ void checkFits()
       }
   if(flag[0] == 1 && flag[1] == 1 && flag[2] == 1 && flag[3] == 1 && flag[4] == 1){
   Serial.print("you have seizures !!");  
+  buzzz();
   }  
 }
+Serial.println("");
 }
+
+void buzzz(){
+  
+  digitalWrite(buzzer,HIGH);
+  delay(500);
+  digitalWrite(buzzer,LOW);
+  delay(500);
+  }
+
 void loop() {
+  Serial.print("pulse : ");
+  Serial.print(analogRead(A0));Serial.print(",");
   timecounter++;
   Serial.print(timecounter);
   Serial.print(",");
@@ -81,19 +96,19 @@ void loop() {
    Serial.print("!");
    Serial.print(",");
    if (xd > yd && xd > zd && xd > mini) {
-  Serial.print("x rules");
+  Serial.print("option 1");
   Serial.print(",");
  }
  if (yd > xd && yd > zd && yd > mini) {
-  Serial.print("y rules");
+  Serial.print("option 1");
   Serial.print(",");
  }
  if (zd > yd && zd > xd && zd > mini) {
-  Serial.print("z rules");
+  Serial.print("option 3");
   Serial.print(",");
  }
-  }
-sensors_event_t event;
+  
+  sensors_event_t event;
    accel.getEvent( & event);
    xf = (event.acceleration.x) / 9.8;
    Serial.print(xd);
@@ -105,4 +120,4 @@ sensors_event_t event;
    Serial.print(zd);
    Serial.println("");
    delay(10);
-}
+}}
