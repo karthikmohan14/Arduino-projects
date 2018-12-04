@@ -7,10 +7,11 @@
 
 long  i;
 String  Mystring;
+String  str;
 WiFiClient client;
 
 String MakerIFTTT_Key ;
-;String MakerIFTTT_Event;
+String MakerIFTTT_Event;
 char *append_str(char *here, String s) {  int i=0; while (*here++ = s[i]){i++;};return here-1;}
 char *append_ul(char *here, unsigned long u) { char buf[20]; return append_str(here, ultoa(u, buf, 10));}
 char post_rqst[256];char *p;char *content_length_here;char *json_start;int compi;
@@ -42,6 +43,7 @@ void loop()
 
     i = (random(0,100));
     Mystring = i;
+    str = "hello, world!";
     if (client.connect("maker.ifttt.com",80)) {
       MakerIFTTT_Key ="bRx84G7QjPLhAgps1D7OwLk-eaeeOhTnkGDITQwV2R0";
       MakerIFTTT_Event ="sheets";
@@ -59,11 +61,7 @@ void loop()
       p = append_str(p, "\r\n");
       json_start = p;
       p = append_str(p, "{\"value1\":\"");
-      p = append_str(p, Mystring);
-      p = append_str(p, "\",\"value2\":\"");
-      p = append_str(p, "");
-      p = append_str(p, "\",\"value3\":\"");
-      p = append_str(p, "");
+      p = append_str(p, str);
       p = append_str(p, "\"}");
 
       compi= strlen(json_start);
@@ -73,7 +71,7 @@ void loop()
 
 
       Serial.println("Value sent to google sheets.");
-      Serial.println(i);
+      Serial.println(str);
 
     }
     delay(20000);
